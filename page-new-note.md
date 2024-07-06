@@ -1,8 +1,8 @@
 ---
-Title: Blog page
+Title: New Note
 Published: @datetime
 Author: @username
-Layout: blog
+Layout: note
 Tag: Example
 ---
-This is a new blog page.
+This is a new note
