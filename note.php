@@ -1,7 +1,7 @@
 <?php
-// note extension, https://github.com/annaesvensson/yellow-note
+// Note extension, https://github.com/annaesvensson/yellow-note
 
-class Yellownote {
+class YellowNote {
     const VERSION = "0.9.4";
     public $yellow;         // access to API
     
@@ -28,25 +28,25 @@ class Yellownote {
         $output = null;
         if (substru($name, 0, 4)=="note" && ($type=="block" || $type=="inline")) {
             switch($name) {
-                case "noteauthors": $output = $this->getShortcutnoteauthors($page, $name, $text); break;
-                case "notetags":    $output = $this->getShortcutnotetags($page, $name, $text); break;
-                case "noteyears":   $output = $this->getShortcutnoteyears($page, $name, $text); break;
-                case "notemonths":  $output = $this->getShortcutnotemonths($page, $name, $text); break;
-                case "notepages":   $output = $this->getShortcutnotepages($page, $name, $text); break;
+                case "noteauthors": $output = $this->getShortcutNoteauthors($page, $name, $text); break;
+                case "notetags":    $output = $this->getShortcutNotetags($page, $name, $text); break;
+                case "noteyears":   $output = $this->getShortcutNoteyears($page, $name, $text); break;
+                case "notemonths":  $output = $this->getShortcutNotemonths($page, $name, $text); break;
+                case "notepages":   $output = $this->getShortcutNotepages($page, $name, $text); break;
             }
         }
         return $output;
     }
         
     // Return noteauthors shortcut
-    public function getShortcutnoteauthors($page, $name, $text) {
+    public function getShortcutNoteauthors($page, $name, $text) {
         $output = null;
         list($startLocation, $shortcutEntries) = $this->yellow->toolbox->getTextArguments($text);
         if (is_string_empty($startLocation)) $startLocation = $this->yellow->system->get("noteStartLocation");
         if (is_string_empty($shortcutEntries)) $shortcutEntries = $this->yellow->system->get("noteShortcutEntries");
-        $noteStart = $this->getnoteStart($page, $startLocation);
+        $noteStart = $this->getNoteStart($page, $startLocation);
         if (!is_null($noteStart)) {
-            $pages = $this->getnotePages($noteStart);
+            $pages = $this->getNotePages($noteStart);
             $page->setLastModified($pages->getModified());
             $authors = $pages->group("author", false, "count");
             if ($shortcutEntries!=0) $authors = array_slice($authors, 0, $shortcutEntries, true);
@@ -60,20 +60,20 @@ class Yellownote {
             $output .= "</ul>\n";
             $output .= "</div>\n";
         } else {
-            $page->error(500, "noteauthors '$startLocation' does not exist!");
+            $page->error(500, "Noteauthors '$startLocation' does not exist!");
         }
         return $output;
     }
     
     // Return notetags shortcut
-    public function getShortcutnotetags($page, $name, $text) {
+    public function getShortcutNotetags($page, $name, $text) {
         $output = null;
         list($startLocation, $shortcutEntries) = $this->yellow->toolbox->getTextArguments($text);
         if (is_string_empty($startLocation)) $startLocation = $this->yellow->system->get("noteStartLocation");
         if (is_string_empty($shortcutEntries)) $shortcutEntries = $this->yellow->system->get("noteShortcutEntries");
-        $noteStart = $this->getnoteStart($page, $startLocation);
+        $noteStart = $this->getNoteStart($page, $startLocation);
         if (!is_null($noteStart)) {
-            $pages = $this->getnotePages($noteStart);
+            $pages = $this->getNotePages($noteStart);
             $page->setLastModified($pages->getModified());
             $tags = $pages->group("tag", false, "count");
             if ($shortcutEntries!=0) $tags = array_slice($tags, 0, $shortcutEntries, true);
@@ -87,20 +87,20 @@ class Yellownote {
             $output .= "</ul>\n";
             $output .= "</div>\n";
         } else {
-            $page->error(500, "notetags '$startLocation' does not exist!");
+            $page->error(500, "Notetags '$startLocation' does not exist!");
         }
         return $output;
     }
 
     // Return noteyears shortcut
-    public function getShortcutnoteyears($page, $name, $text) {
+    public function getShortcutNoteyears($page, $name, $text) {
         $output = null;
         list($startLocation, $shortcutEntries) = $this->yellow->toolbox->getTextArguments($text);
         if (is_string_empty($startLocation)) $startLocation = $this->yellow->system->get("noteStartLocation");
         if (is_string_empty($shortcutEntries)) $shortcutEntries = $this->yellow->system->get("noteShortcutEntries");
-        $noteStart = $this->getnoteStart($page, $startLocation);
+        $noteStart = $this->getNoteStart($page, $startLocation);
         if (!is_null($noteStart)) {
-            $pages = $this->getnotePages($noteStart);
+            $pages = $this->getNotePages($noteStart);
             $page->setLastModified($pages->getModified());
             $years = $pages->group("published", false, "Y");
             if ($shortcutEntries!=0) $years = array_slice($years, 0, $shortcutEntries, true);
@@ -113,20 +113,20 @@ class Yellownote {
             $output .= "</ul>\n";
             $output .= "</div>\n";
         } else {
-            $page->error(500, "noteyears '$startLocation' does not exist!");
+            $page->error(500, "Noteyears '$startLocation' does not exist!");
         }
         return $output;
     }
     
     // Return notemonths shortcut
-    public function getShortcutnotemonths($page, $name, $text) {
+    public function getShortcutNotemonths($page, $name, $text) {
         $output = null;
         list($startLocation, $shortcutEntries) = $this->yellow->toolbox->getTextArguments($text);
         if (is_string_empty($startLocation)) $startLocation = $this->yellow->system->get("noteStartLocation");
         if (is_string_empty($shortcutEntries)) $shortcutEntries = $this->yellow->system->get("noteShortcutEntries");
-        $noteStart = $this->getnoteStart($page, $startLocation);
+        $noteStart = $this->getNoteStart($page, $startLocation);
         if (!is_null($noteStart)) {
-            $pages = $this->getnotePages($noteStart);
+            $pages = $this->getNotePages($noteStart);
             $page->setLastModified($pages->getModified());
             $months = $pages->group("published", false, "Y-m");
             if ($shortcutEntries!=0) $months = array_slice($months, 0, $shortcutEntries, true);
@@ -139,34 +139,34 @@ class Yellownote {
             $output .= "</ul>\n";
             $output .= "</div>\n";
         } else {
-            $page->error(500, "notemonths '$startLocation' does not exist!");
+            $page->error(500, "Notemonths '$startLocation' does not exist!");
         }
         return $output;
     }
     
     // Return notepages shortcut
-    public function getShortcutnotepages($page, $name, $text) {
+    public function getShortcutNotepages($page, $name, $text) {
         $output = null;
         list($startLocation, $shortcutEntries, $filterTag) = $this->yellow->toolbox->getTextArguments($text);
         if (is_string_empty($startLocation)) $startLocation = $this->yellow->system->get("noteStartLocation");
         if (is_string_empty($shortcutEntries)) $shortcutEntries = $this->yellow->system->get("noteShortcutEntries");
-        $noteStart = $this->getnoteStart($page, $startLocation);
+        $noteStart = $this->getNoteStart($page, $startLocation);
         if (!is_null($noteStart)) {
-            $pages = $this->getnotePages($noteStart)->remove($page);
+            $pages = $this->getNotePages($noteStart)->remove($page);
             $page->setLastModified($pages->getModified());
             if (!is_string_empty($filterTag)) $pages->filter("tag", $filterTag);
             $pages->sort("published", false);
             if ($shortcutEntries!=0) $pages->limit($shortcutEntries);
             $output = "<div class=\"".htmlspecialchars($name)."\">\n";
             $output .= "<ul>\n";
-            foreach ($pages as $pagenote) {
-                $output .= "<li><a".($pagenote->isExisting("tag") ? " class=\"".$this->getClass($pagenote)."\"" : "");
-                $output .=" href=\"".$pagenote->getLocation(true)."\">".$pagenote->getHtml("title")."</a></li>\n";
+            foreach ($pages as $pageNote) {
+                $output .= "<li><a".($pageNote->isExisting("tag") ? " class=\"".$this->getClass($pageNote)."\"" : "");
+                $output .=" href=\"".$pageNote->getLocation(true)."\">".$pageNote->getHtml("title")."</a></li>\n";
             }
             $output .= "</ul>\n";
             $output .= "</div>\n";
         } else {
-            $page->error(500, "notepages '$startLocation' does not exist!");
+            $page->error(500, "Notepages '$startLocation' does not exist!");
         }
         return $output;
     }
@@ -174,7 +174,7 @@ class Yellownote {
     // Handle page layout
     public function onParsePageLayout($page, $name) {
         if ($name=="note-start") {
-            $pages = $this->getnotePages($page);
+            $pages = $this->getNotePages($page);
             $pagesFilter = array();
             if ($page->isRequest("tag")) {
                 $pages->filter("tag", $page->getRequest("tag"));
@@ -212,7 +212,7 @@ class Yellownote {
     }
     
     // Return note start page, null if not found
-    public function getnoteStart($page, $noteStartLocation) {
+    public function getNoteStart($page, $noteStartLocation) {
         if ($noteStartLocation=="auto") {
             $noteStart = null;
             foreach ($this->yellow->content->top(true, false) as $pageTop) {
@@ -229,7 +229,7 @@ class Yellownote {
     }
 
     // Return note pages for page
-    public function getnotePages($page) {
+    public function getNotePages($page) {
         if ($this->yellow->system->get("noteStartLocation")=="auto") {
             $pages = $page->getChildren();
         } else {

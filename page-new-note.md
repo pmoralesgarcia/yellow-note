@@ -5,4 +5,4 @@ Author: @username
 Layout: note
 Tag: Example
 ---
-This is a new note
+This is a new note.
